@@ -1,3 +1,8 @@
+variable "create_elb" {
+  description = "If set to false, module will not create ELB resources"
+  default     = true
+}
+
 variable "name" {
   description = "The name of the ELB"
 }

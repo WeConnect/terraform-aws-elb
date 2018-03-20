@@ -20,6 +20,8 @@ Usage
 module "elb_http" {
   source = "terraform-aws-modules/elb/aws"
 
+  create_elb = true
+
   name = "elb-example"
 
   subnets         = ["subnet-12345678", "subnet-87654321"]
@@ -54,13 +56,17 @@ module "elb_http" {
   // ELB attachments
   number_of_instances = 2
   instances           = ["i-06ff41a77dfb5349d", "i-4906ff41a77dfb53d"]
-  
+
   tags = {
     Owner       = "user"
     Environment = "dev"
   }
 }
 ```
+
+Conditional
+--------
+* This module supports the conditional `create_elb`.  By default this is `true`, but if set to `false`, ELB resources will not be created.
 
 Examples
 --------
