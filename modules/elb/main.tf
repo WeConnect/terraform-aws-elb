@@ -19,3 +19,9 @@ resource "aws_elb" "this" {
 
   tags = "${merge(var.tags, map("Name", format("%s", var.name)))}"
 }
+
+resource "aws_proxy_protocol_policy" "this" {
+  count = "${var.create_elb ! ? 0 : var.proxy_protocol ? 1 : 0}"
+  load_balancer = "${aws_elb.this.name}"
+  instance_ports = ["${var.proxy_protocol_instance_ports"]
+}
