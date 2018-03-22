@@ -1,14 +1,13 @@
-######
-# ELB
-######
-module "elb" {
-  source = "./modules/elb"
+#######
+# ELB #
+#######
 
-  name = "${var.name}"
-
+resource "aws_elb" "this" {
+  count           = "${var.create_elb ? 1 : 0}"
+  name            = "${var.name}"
   subnets         = ["${var.subnets}"]
-  security_groups = ["${var.security_groups}"]
   internal        = "${var.internal}"
+  security_groups = ["${var.security_groups}"]
 
   cross_zone_load_balancing   = "${var.cross_zone_load_balancing}"
   idle_timeout                = "${var.idle_timeout}"
@@ -22,14 +21,18 @@ module "elb" {
   tags = "${merge(var.tags, map("Name", format("%s", var.name)))}"
 }
 
-#################
-# ELB attachment
-#################
-module "elb_attachment" {
-  source = "./modules/elb_attachment"
+resource "aws_proxy_protocol_policy" "this" {
+  count          = "${! var.create_elb ? 0 : var.proxy_protocol ? 1 : 0}"
+  load_balancer  = "${aws_elb.this.name}"
+  instance_ports = ["${var.proxy_protocol_instance_ports}"]
+}
 
-  number_of_instances = "${var.number_of_instances}"
+##################
+# ELB attachment #
+##################
 
-  elb       = "${module.elb.this_elb_id}"
-  instances = "${var.instances}"
+resource "aws_elb_attachment" "this" {
+  count    = "${var.create_elb ? var.number_of_instances : 0}"
+  elb      = "${aws_elb.this.id}"
+  instance = "${element(var.instances, count.index)}"
 }

@@ -21,6 +21,17 @@ variable "internal" {
   description = "If true, ELB will be an internal ELB"
 }
 
+variable "proxy_protocol" {
+  description = "If true, proxy protocol will be utilized for provided instance ports."
+  default     = false
+}
+
+variable "proxy_protocol_instance_ports" {
+  type        = "list"
+  description = "A list of instance ports to forward Proxy Protocol information."
+  default     = []
+}
+
 variable "cross_zone_load_balancing" {
   description = "Enable cross-zone load balancing"
   default     = true
@@ -65,14 +76,15 @@ variable "health_check" {
   type        = "list"
 }
 
-# ELB attachment
+######################## 
+# ELB Attachments Vars #
+########################
+
 variable "number_of_instances" {
-  description = "Number of instances to attach to ELB"
-  default     = 0
+  description = "Number of instances ID to place in the ELB pool"
 }
 
 variable "instances" {
   description = "List of instances ID to place in the ELB pool"
   type        = "list"
-  default     = []
 }
