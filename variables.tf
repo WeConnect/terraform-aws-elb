@@ -76,7 +76,7 @@ variable "health_check" {
   type        = "list"
 }
 
-########################
+######################## 
 # ELB Attachments Vars #
 ########################
 
@@ -87,26 +87,4 @@ variable "number_of_instances" {
 variable "instances" {
   description = "List of instances ID to place in the ELB pool"
   type        = "list"
-}
-
-########################
-#  S3 Access Logs Vars #
-########################
-
-variable s3_access_logs_bucket {
-  type        = "string"
-  description = "Name of the S3 bucket to put Access Logs. If not provided, this feature is disabled."
-  default     = ""
-}
-
-variable s3_access_logs_prefix {
-  type        = "string"
-  description = "The S3 bucket prefix. Logs are stored in the root of the bucket if not configured."
-  default     = ""
-}
-
-variable s3_access_logs_interval {
-  type        = "string"
-  description = "The publishing interval of logs in minutes."
-  default     = "60"
 }
