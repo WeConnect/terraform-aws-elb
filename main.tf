@@ -18,6 +18,13 @@ resource "aws_elb" "this" {
   access_logs  = ["${var.access_logs}"]
   health_check = ["${var.health_check}"]
 
+  access_logs = {
+    enabled       = "${var.s3_access_logs_bucket != "" ? true : false}"
+    bucket        = "${var.s3_access_logs_bucket}"
+    bucket_prefix = "${var.s3_access_logs_prefix}"
+    interval      = "${var.s3_access_logs_interval}"
+  }
+
   tags = "${merge(var.tags, map("Name", format("%s", var.name)))}"
 }
 
